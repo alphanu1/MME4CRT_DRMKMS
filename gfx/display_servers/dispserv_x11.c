@@ -491,65 +491,65 @@ static void x11_display_server_destroy(void *data)
    bool crt_exists          = false;
    char dmode[25]            ={};
 
-
-   snprintf(dmode, sizeof(dmode), "%s", "d_mo");
-
-   crt_rrmode.name = dmode;
-   crt_rrmode.nameLength = strlen(crt_name);
-   crt_rrmode.dotClock = 13849698;
-   crt_rrmode.width = 700;
-   crt_rrmode.hSyncStart = 742;
-   crt_rrmode.hSyncEnd = 801;
-   crt_rrmode.hTotal = 867;
-   crt_rrmode.height = 480;
-   crt_rrmode.vSyncStart = 490;
-   crt_rrmode.vSyncEnd = 496;
-   crt_rrmode.vTotal = 533;
-   crt_rrmode.modeFlags = 26; /* 10 for -hsync -vsync. ?? for -hsync -vsync interlaced */
-   crt_rrmode.hSkew = 0;
-
-
-   res = XRRGetScreenResources(dpy, window);
-   resources = XRRGetScreenResourcesCurrent(dpy, window);
-   XRRModeInfo *swoldmode = NULL;
-   XRRModeInfo *swdeskmode = NULL;
-   XSync(dpy, False);
-
-   resources = XRRGetScreenResourcesCurrent(dpy, window);
-
-   for (int m = 0; m < resources->nmode; m++)
-   {
-      if (strcmp(resources->modes[m].name, dmode) == 0)
-      {
-         
-         crt_exists = true;
-         break;
-      }
-   }
-
-   XRRFreeScreenResources(resources);
-
-   
-   if (crt_exists == false)
-   {
-      RRMode wMode = XRRCreateMode(dpy, window, &crt_rrmode); 
-   }
-   
-
-   resources = XRRGetScreenResourcesCurrent(dpy, window);
-
-   for (int m = 0; m < resources->nmode; m++)
-   {
-      if (strcmp(resources->modes[m].name, dmode) == 0)
-      {
-         
-         swdeskmode = &resources->modes[m];
-         break;
-      }
-   }
-
    if (crt_en)
    {
+      snprintf(dmode, sizeof(dmode), "%s", "d_mo");
+
+      crt_rrmode.name = dmode;
+      crt_rrmode.nameLength = strlen(crt_name);
+      crt_rrmode.dotClock = 13849698;
+      crt_rrmode.width = 700;
+      crt_rrmode.hSyncStart = 742;
+      crt_rrmode.hSyncEnd = 801;
+      crt_rrmode.hTotal = 867;
+      crt_rrmode.height = 480;
+      crt_rrmode.vSyncStart = 490;
+      crt_rrmode.vSyncEnd = 496;
+      crt_rrmode.vTotal = 533;
+      crt_rrmode.modeFlags = 26; /* 10 for -hsync -vsync. ?? for -hsync -vsync interlaced */
+      crt_rrmode.hSkew = 0;
+
+
+      res = XRRGetScreenResources(dpy, window);
+      resources = XRRGetScreenResourcesCurrent(dpy, window);
+      XRRModeInfo *swoldmode = NULL;
+      XRRModeInfo *swdeskmode = NULL;
+      XSync(dpy, False);
+
+      resources = XRRGetScreenResourcesCurrent(dpy, window);
+
+      for (int m = 0; m < resources->nmode; m++)
+      {
+         if (strcmp(resources->modes[m].name, dmode) == 0)
+         {
+         
+            crt_exists = true;
+            break;
+         }
+      }
+
+      XRRFreeScreenResources(resources);
+
+   
+      if (crt_exists == false)
+      {
+        RRMode wMode = XRRCreateMode(dpy, window, &crt_rrmode); 
+      }
+   
+
+      resources = XRRGetScreenResourcesCurrent(dpy, window);
+
+      for (int m = 0; m < resources->nmode; m++)
+      {
+         if (strcmp(resources->modes[m].name, dmode) == 0)
+         {
+         
+            swdeskmode = &resources->modes[m];
+            break;
+         }
+      }
+
+   
        if (g_monitor_index == 20)
       {
          for (int i = 0; i < res->noutput; i++)
