@@ -504,6 +504,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 
          //} 
          drmModeFreeResources(p_res);
+         close(m_drm_fd);
       }
    }
 	
