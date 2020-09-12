@@ -458,6 +458,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 					char connector_name[32];
 					snprintf(connector_name, 32, "%s%d", get_connector_name(p_connector->connector_type), p_connector->connector_type_id);
 				   printf(connector_name);
+               printf("\n");
                if (!m_desktop_output && p_connector->connection == DRM_MODE_CONNECTED)
 					{
                   if (!strcmp(m_device_name, "auto") || !strcmp(m_device_name, connector_name) || output_position == screen_pos)
@@ -475,7 +476,8 @@ static void crt_kms_switch(unsigned width, unsigned height,
 									{
                               /* Run switcing code here */
 										printf("DRM/KMS: <%d> (init) desktop mode name %s crtc %d fb %d valid %d\n", m_id, mp_crtc_desktop->mode.name, mp_crtc_desktop->crtc_id, mp_crtc_desktop->buffer_id, mp_crtc_desktop->mode_valid);
-										break;
+										printf("\n");
+                              break;
 									}
 									drmModeFreeCrtc(mp_crtc_desktop);
 								}
