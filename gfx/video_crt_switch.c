@@ -33,7 +33,7 @@
 static void crt_rpi_switch(int width, int height, float hz, int xoffset);
 #endif
 
-#if defined(HAVE_KMS) && !defined(HAVE_X11)
+#if defined(HAVE_KMS)
 #include <xf86drm.h>
 #include <xf86drmMode.h>
 #include <stdio.h>
@@ -109,7 +109,7 @@ static void switch_res_crt(
    crt_switch_driver_reinit();
 #endif
 
-#if defined(HAVE_KMS) && !defined(HAVE_X11)
+#if defined(HAVE_KMS)
     crt_kms_switch(width, height,
          p_switch->ra_set_core_hz,
          p_switch->ra_core_hz,
@@ -406,7 +406,8 @@ static void crt_rpi_switch(int width, int height, float hz, int xoffset)
 }
 #endif
 
-#if defined(HAVE_KMS) && !defined(HAVE_X11)
+#if defined(HAVE_KMS)
+
 
 static void crt_kms_switch(unsigned width, unsigned height, 
    int int_hz, float hz, int center, int monitor_index, 
