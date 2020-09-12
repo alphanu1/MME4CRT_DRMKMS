@@ -433,7 +433,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 	else if (strlen(m_device_name) == 1 && m_device_name[0] >= '0' && m_device_name[0] <= '9')
 		screen_pos = m_device_name[0] - '0';
 
-   char drm_name[15] = "/dev/dri/card";
+   char drm_name[15] = "/dev/dri/card_";
    drmModeRes *p_res;
 	drmModeConnector *p_connector;
 
