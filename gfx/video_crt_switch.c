@@ -451,9 +451,9 @@ static void crt_kms_switch(unsigned width, unsigned height,
 
 			p_res = drmModeGetResources(m_drm_fd);
 
-         printf("\n\n%s %d %d ",drm_name, m_drm_fd);
+         printf("\n\n%s %d %d %s",drm_name, m_drm_fd,  drmGetVersion(m_drm_fd));
          printf("\n\n");
-         printf(p_res = drmModeGetResources(m_drm_fd));
+         printf(drmModeGetResources(m_drm_fd));
           printf("\n\n");
 			/*for (int i = 0; i  < p_res->count_connectors; i++)
 			{
