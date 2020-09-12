@@ -457,7 +457,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 			//{
             p_connector = drmModeGetConnector(m_drm_fd, p_res->connectors[0]); 
             
-            if (p_connector)
+           /* if (p_connector)
 				{
 					char connector_name[100];
 					snprintf(connector_name, sizeof(connector_name), "%s%d", get_connector_name(p_connector->connector_type), p_connector->connector_type_id);
@@ -500,7 +500,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
                   output_position++;
                }
                drmModeFreeConnector(p_connector);
-            } 
+            } */
 
          //} 
          drmModeFreeResources(p_res);
