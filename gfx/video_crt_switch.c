@@ -446,12 +446,13 @@ static void crt_kms_switch(unsigned width, unsigned height,
       if (m_drm_fd > 0)
 		{
 			drmVersion *version = drmGetVersion(m_drm_fd);
-         drmFreeVersion(version);
+
 			uint64_t check_dumb = 0;
 
 			p_res = drmModeGetResources(m_drm_fd);
 
-         printf("\n\n%s %d %d %s",drm_name, m_drm_fd,  drmGetVersion(m_drm_fd));
+         printf("\n\n%s %d %d %s",drm_name, m_drm_fd,  version);
+         drmFreeVersion(version);
          printf("\n\n");
          printf(drmModeGetResources(m_drm_fd));
           printf("\n\n");
