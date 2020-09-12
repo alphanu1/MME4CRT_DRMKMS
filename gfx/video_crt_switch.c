@@ -438,7 +438,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 	drmModeConnector *p_connector;
 
    int output_position = 0;
-	/*for (int num = 0; !m_desktop_output && num < 10; num++)
+	for (int num = 0; !m_desktop_output && num < 2; num++)
 	{
 		drm_name[13] = '0' + num;
       m_drm_fd = open(drm_name, O_RDWR);
@@ -505,7 +505,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
          } 
          drmModeFreeResources(p_res);
       }
-   }*/
+   }
 	
 
 }
