@@ -451,12 +451,12 @@ static void crt_kms_switch(unsigned width, unsigned height,
 
 			p_res = drmModeGetResources(m_drm_fd);
 
-         printf(drm_name);
+         printf("%s%d",drm_name,p_res->count_connectors);
 
 			for (int i = 0; i < 1; i++)//< p_res->count_connectors; i++)
 			{
-            p_connector = drmModeGetConnector(m_drm_fd, p_res->connectors[0]); 
-            
+            //p_connector = drmModeGetConnector(m_drm_fd, p_res->connectors[i]); 
+            /*
             if (p_connector)
 				{
 					char connector_name[100];
@@ -500,7 +500,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
                   output_position++;
                }
                drmModeFreeConnector(p_connector);
-            } 
+            } */
 
          } 
          drmModeFreeResources(p_res);
