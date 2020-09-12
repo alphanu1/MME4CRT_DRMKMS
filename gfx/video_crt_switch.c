@@ -469,19 +469,27 @@ static void crt_kms_switch(unsigned width, unsigned height,
                      drmModeEncoder *p_encoder = drmModeGetEncoder(m_drm_fd, p_connector->encoder_id);
                      if (p_encoder)
 							{
-								for (int e = 0; e < p_res->count_crtcs; e++)
+							/*	for (int e = 0; e < p_res->count_crtcs; e++)
 								{
 									mp_crtc_desktop = drmModeGetCrtc(m_drm_fd, p_res->crtcs[e]);
 
 									if (mp_crtc_desktop->crtc_id == p_encoder->crtc_id)
 									{
-                              /* Run switcing code here */
+                              
+
+
+
+
+
+
+
+                              
 										printf("DRM/KMS: <%d> (init) desktop mode name %s crtc %d fb %d valid %d\n", m_id, mp_crtc_desktop->mode.name, mp_crtc_desktop->crtc_id, mp_crtc_desktop->buffer_id, mp_crtc_desktop->mode_valid);
 										//printf("\n");
                               break;
 									}
 									drmModeFreeCrtc(mp_crtc_desktop);
-								}
+								}*/
 							}
                      if (mp_crtc_desktop)
 							   drmModeFreeEncoder(p_encoder);
