@@ -425,7 +425,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 	unsigned int m_dumb_handle = 0;
 	unsigned int m_framebuffer_id = 0;
    drmModeCrtc *mp_crtc_desktop = NULL;
-   mp_drm_handle = dlopen("libdrm.so", RTLD_NOW);
+   //mp_drm_handle = dlopen("libdrm.so", RTLD_NOW);
 
 
    if (strlen(m_device_name) == 7 && !strncmp(m_device_name, "screen", 6) && m_device_name[6] >= '0' && m_device_name[6] <= '9')
@@ -453,7 +453,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 
          printf("\n\n%s",drm_name);
 
-			for (int i = 0; i < 1; i++)//< p_res->count_connectors; i++)
+			for (int i = 0; i < 1; < p_res->count_connectors; i++)
 			{
             //p_connector = drmModeGetConnector(m_drm_fd, p_res->connectors[i]); 
             
