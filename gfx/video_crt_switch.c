@@ -33,6 +33,23 @@
 static void crt_rpi_switch(int width, int height, float hz, int xoffset);
 #endif
 
+#if defined(HAVE_KMS) && !defined(HAVE_X11)
+#include <xf86drm.h>
+#include <xf86drmMode.h>
+#include <stdio.h>
+#include <dlfcn.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/ioctl.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+static void crt_kms_switch(unsigned width, unsigned height, 
+   int int_hz, float hz, int center, int monitor_index, 
+   int xoffset, int padjust);
+const char *get_connector_name(int mode);
+#endif
+
 static void switch_crt_hz(videocrt_switch_t *p_switch)
 {
    float ra_core_hz = p_switch->ra_core_hz;
@@ -90,6 +107,16 @@ static void switch_res_crt(
          p_switch->center_adjust);
    video_monitor_set_refresh_rate(p_switch->ra_core_hz);
    crt_switch_driver_reinit();
+#endif
+
+#if defined(HAVE_KMS) && !defined(HAVE_X11)
+    crt_kms_switch(width, height,
+         p_switch->ra_set_core_hz,
+         p_switch->ra_core_hz,
+         p_switch->center_adjust,
+         p_switch->index,
+         p_switch->center_adjust,
+         p_switch->porch_adjust);
 #endif
    video_driver_apply_state_changes();
 }
@@ -377,4 +404,142 @@ static void crt_rpi_switch(int width, int height, float hz, int xoffset)
          width, height, width, height);
    system(output2);
 }
+#endif
+
+#if defined(HAVE_KMS) && !defined(HAVE_X11)
+
+static void crt_kms_switch(unsigned width, unsigned height, 
+   int int_hz, float hz, int center, int monitor_index, 
+   int xoffset, int padjust)
+{
+   int screen_pos = -1;
+   int m_id = 0;
+	int m_drm_fd = 0;
+	int m_card_id = 0;
+	int drm_master_hook(int fd);
+	char m_device_name[32] = {};
+	unsigned int m_desktop_output = 0;
+	int m_video_modes_position = 0;
+	void *mp_drm_handle = NULL;
+	unsigned int m_dumb_handle = 0;
+	unsigned int m_framebuffer_id = 0;
+   drmModeCrtc *mp_crtc_desktop = NULL;
+   mp_drm_handle = dlopen("libdrm.so", RTLD_NOW);
+
+
+   if (strlen(m_device_name) == 7 && !strncmp(m_device_name, "screen", 6) && m_device_name[6] >= '0' && m_device_name[6] <= '9')
+		screen_pos = m_device_name[6] - '0';
+	else if (strlen(m_device_name) == 1 && m_device_name[0] >= '0' && m_device_name[0] <= '9')
+		screen_pos = m_device_name[0] - '0';
+
+   char drm_name[15] = "/dev/dri/card_";
+   drmModeRes *p_res;
+	drmModeConnector *p_connector;
+
+   int output_position = 0;
+	for (int num = 0; !m_desktop_output && num < 10; num++)
+	{
+		drm_name[13] = '0' + num;
+      m_drm_fd = open(drm_name, O_RDWR | O_CLOEXEC);
+      
+      if (m_drm_fd > 0)
+		{
+			drmVersion *version = drmGetVersion(m_drm_fd);
+         drmFreeVersion(version);
+			uint64_t check_dumb = 0;
+
+			p_res = drmModeGetResources(m_drm_fd);
+
+			for (int i = 0; i < p_res->count_connectors; i++)
+			{
+            p_connector = drmModeGetConnector(m_drm_fd, p_res->connectors[i]);
+				if (p_connector)
+				{
+					char connector_name[32];
+					snprintf(connector_name, 32, "%s%d", get_connector_name(p_connector->connector_type), p_connector->connector_type_id);
+				   printf(connector_name);
+               if (!m_desktop_output && p_connector->connection == DRM_MODE_CONNECTED)
+					{
+                  if (!strcmp(m_device_name, "auto") || !strcmp(m_device_name, connector_name) || output_position == screen_pos)
+						{
+                     m_desktop_output = p_connector->connector_id;
+							m_card_id = num;
+                     drmModeEncoder *p_encoder = drmModeGetEncoder(m_drm_fd, p_connector->encoder_id);
+                     if (p_encoder)
+							{
+								for (int e = 0; e < p_res->count_crtcs; e++)
+								{
+									mp_crtc_desktop = drmModeGetCrtc(m_drm_fd, p_res->crtcs[e]);
+
+									if (mp_crtc_desktop->crtc_id == p_encoder->crtc_id)
+									{
+                              /* Run switcing code here */
+										printf("DRM/KMS: <%d> (init) desktop mode name %s crtc %d fb %d valid %d\n", m_id, mp_crtc_desktop->mode.name, mp_crtc_desktop->crtc_id, mp_crtc_desktop->buffer_id, mp_crtc_desktop->mode_valid);
+										break;
+									}
+									drmModeFreeCrtc(mp_crtc_desktop);
+								}
+							}
+                     if (mp_crtc_desktop)
+							   drmModeFreeEncoder(p_encoder);
+                  }
+                  output_position++;
+               }
+               drmModeFreeConnector(p_connector);
+            }
+
+         }
+         drmModeFreeResources(p_res);
+      }
+   }
+	
+
+}
+
+
+const char *get_connector_name(int mode)
+{
+	switch (mode)
+	{
+		case DRM_MODE_CONNECTOR_Unknown:
+			return "Unknown";
+		case DRM_MODE_CONNECTOR_VGA:
+			return "VGA-";
+		case DRM_MODE_CONNECTOR_DVII:
+			return "DVI-I-";
+		case DRM_MODE_CONNECTOR_DVID:
+			return "DVI-D-";
+		case DRM_MODE_CONNECTOR_DVIA:
+			return "DVI-A-";
+		case DRM_MODE_CONNECTOR_Composite:
+			return "Composite-";
+		case DRM_MODE_CONNECTOR_SVIDEO:
+			return "SVIDEO-";
+		case DRM_MODE_CONNECTOR_LVDS:
+			return "LVDS-";
+		case DRM_MODE_CONNECTOR_Component:
+			return "Component-";
+		case DRM_MODE_CONNECTOR_9PinDIN:
+			return "9PinDIN-";
+		case DRM_MODE_CONNECTOR_DisplayPort:
+			return "DisplayPort-";
+		case DRM_MODE_CONNECTOR_HDMIA:
+			return "HDMI-A-";
+		case DRM_MODE_CONNECTOR_HDMIB:
+			return "HDMI-B-";
+		case DRM_MODE_CONNECTOR_TV:
+			return "TV-";
+		case DRM_MODE_CONNECTOR_eDP:
+			return "eDP-";
+		case DRM_MODE_CONNECTOR_VIRTUAL:
+			return "VIRTUAL-";
+		case DRM_MODE_CONNECTOR_DSI:
+			return "DSI-";
+		case DRM_MODE_CONNECTOR_DPI:
+			return "DPI-";
+		default:
+			return "not_defined-";
+	}
+}
+
 #endif
