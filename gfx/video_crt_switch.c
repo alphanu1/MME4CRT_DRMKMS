@@ -441,7 +441,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 	for (int num = 0; !m_desktop_output && num < 10; num++)
 	{
 		drm_name[13] = '0' + num;
-      m_drm_fd = open(drm_name, O_RDWR | O_CLOEXEC);
+      m_drm_fd = open(drm_name);
       
       if (m_drm_fd > 0)
 		{
@@ -451,7 +451,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 
 			p_res = drmModeGetResources(m_drm_fd);
 
-         printf("%s%d",drm_name,p_res->count_connectors);
+         printf("%s%d",drm_name, p_res->count_connectors);
 
 			for (int i = 0; i < 1; i++)//< p_res->count_connectors; i++)
 			{
