@@ -446,7 +446,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
       if (m_drm_fd > 0)
 		{
 			drmVersion *version = drmGetVersion(m_drm_fd);
-         //drmFreeVersion(version);
+         drmFreeVersion(version);
 			uint64_t check_dumb = 0;
 
 			p_res = drmModeGetResources(m_drm_fd);
@@ -480,19 +480,19 @@ static void crt_kms_switch(unsigned width, unsigned height,
 										//printf("\n");
                               break;
 									}
-									//drmModeFreeCrtc(mp_crtc_desktop);
+									drmModeFreeCrtc(mp_crtc_desktop);
 								}
 							}
-                     //if (mp_crtc_desktop)
-							 //  drmModeFreeEncoder(p_encoder);
+                     if (mp_crtc_desktop)
+							   drmModeFreeEncoder(p_encoder);
                   }
                   output_position++;
                }
-               //drmModeFreeConnector(p_connector);
+               drmModeFreeConnector(p_connector);
             }
 
          }
-         //drmModeFreeResources(p_res);
+         drmModeFreeResources(p_res);
       }
    }
 	
