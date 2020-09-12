@@ -455,7 +455,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 
 			//for (int i = 0; i  < p_res->count_connectors; i++)
 			//{
-            p_connector = drmModeGetConnector(m_drm_fd, p_res->connectors[0]); 
+            p_connector = drmModeGetConnector(0, p_res->connectors[0]); 
             
            /* if (p_connector)
 				{
