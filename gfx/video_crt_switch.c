@@ -93,13 +93,13 @@ static void switch_res_crt(
       videocrt_switch_t *p_switch,
       unsigned width, unsigned height)
 {
-   video_display_server_set_resolution(width, height,
+/*   video_display_server_set_resolution(width, height,
          p_switch->ra_set_core_hz,
          p_switch->ra_core_hz,
          p_switch->center_adjust,
          p_switch->index,
          p_switch->center_adjust,
-         p_switch->porch_adjust);
+         p_switch->porch_adjust); */
 
 #if defined(HAVE_VIDEOCORE)
    crt_rpi_switch(width, height,
