@@ -469,7 +469,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
                printf("\n\n");
                if (p_connector->connection == DRM_MODE_CONNECTED)
 					{
-                 f (!strcmp(m_device_name, "auto") || !strcmp(m_device_name, connector_name) || output_position == screen_pos)
+                 if (!strcmp(m_device_name, "auto") || !strcmp(m_device_name, connector_name) || output_position == screen_pos)
 						{
                      m_desktop_output = p_connector->connector_id;
 							m_card_id = num;
