@@ -501,14 +501,14 @@ static void crt_kms_switch(unsigned width, unsigned height,
 	// Create specific mode name
 	snprintf(dmode.name, 32, "SR-%d_%dx%d@%.02f%s", m_id, width, height, hz);
 	dmode.clock       = pixel_clock  / 1000;
-	dmode.hdisplay    = mode->width;
-	dmode.hsync_start = mode->hfp;
-	dmode.hsync_end   = mode->hsp;
-	dmode.htotal      = mode->hbp;
-	dmode.vdisplay    = mode->height;
-	dmode.vsync_start = mode->vfp;
-	dmode.vsync_end   = mode->csp;
-	dmode.vtotal      = mode->vbp;
+	dmode.hdisplay    = width;
+	dmode.hsync_start = hfp;
+	dmode.hsync_end   = hsp;
+	dmode.htotal      = hbp;
+	dmode.vdisplay    = height;
+	dmode.vsync_start = vfp;
+	dmode.vsync_end   = csp;
+	dmode.vtotal      = vbp;
 	dmode.flags       = 10;
 
 	dmode.hskew       = 0;
