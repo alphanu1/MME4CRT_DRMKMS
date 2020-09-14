@@ -532,7 +532,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
                                     drm_mode_map_dumb map_dumb = {};
                                     map_dumb.handle = create_dumb.handle;
 
-                                    				memset(map, 0, create_dumb.size);
+                                    				//memset(map, 0, create_dumb.size);
 
                                                 		drmModeFreeFB(pframebuffer);
 
