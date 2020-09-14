@@ -474,8 +474,8 @@ static void crt_kms_switch(unsigned width, unsigned height,
 							m_card_id = num;
                      drmModeEncoder *p_encoder = drmModeGetEncoder(m_drm_fd, p_connector->encoder_id);
                      if (p_encoder)
-							{
-								for (int e = 0; e < p_res->count_crtcs; e++)
+					   	{
+								/*for (int e = 0; e < p_res->count_crtcs; e++)
 								{
 									mp_crtc_desktop = drmModeGetCrtc(m_drm_fd, p_res->crtcs[e]);
 
@@ -495,7 +495,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
                               break;
 									}
 									drmModeFreeCrtc(mp_crtc_desktop);
-								}
+								}*/
 							}
                      if (mp_crtc_desktop)
 							   drmModeFreeEncoder(p_encoder);
