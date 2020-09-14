@@ -518,7 +518,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 
 	dmode.type        = DRM_MODE_TYPE_USERDEF;	//DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
 
-   drmModeModeInfo *mode = {};
+   drmModeModeInfo *mode = &dmode;
 
 	mode->type |= CUSTOM_VIDEO_TIMING_DRMKMS;
 
