@@ -467,7 +467,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 					snprintf(connector_name, sizeof(connector_name), "%s%d", get_connector_name(p_connector->connector_type), p_connector->connector_type_id);
 				   printf(connector_name);
                printf("\n");
-               if (!m_desktop_output && p_connector->connection == DRM_MODE_CONNECTED)
+              /* if (!m_desktop_output && p_connector->connection == DRM_MODE_CONNECTED)
 					{
                   if (!strcmp(m_device_name, "auto") || !strcmp(m_device_name, connector_name) || output_position == screen_pos)
 						{
@@ -476,7 +476,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
                      drmModeEncoder *p_encoder = drmModeGetEncoder(m_drm_fd, p_connector->encoder_id);
                      if (p_encoder)
 					   	{
-								/*for (int e = 0; e < p_res->count_crtcs; e++)
+								for (int e = 0; e < p_res->count_crtcs; e++)
 								{
 									mp_crtc_desktop = drmModeGetCrtc(m_drm_fd, p_res->crtcs[e]);
 
@@ -497,12 +497,12 @@ static void crt_kms_switch(unsigned width, unsigned height,
                               break;
 									}
 									drmModeFreeCrtc(mp_crtc_desktop);
-								}*/
+								}
 							}
 							   drmModeFreeEncoder(p_encoder);
                   }
                   output_position++;
-               }
+               }*/
                drmModeFreeConnector(p_connector);
             } 
 
