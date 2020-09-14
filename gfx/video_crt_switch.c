@@ -493,56 +493,63 @@ static void crt_kms_switch(unsigned width, unsigned height,
                      if (p_encoder)
 					   	{
                          /* Run switching code here */	
-                     drmSetMaster(m_drm_fd);
+                        drmSetMaster(m_drm_fd);
 
-	// Setup the DRM mode structure
-	drmModeModeInfo dmode = {};
+                        // Setup the DRM mode structure
+                        drmModeModeInfo dmode = {};
 
-	// Create specific mode name
-	snprintf(dmode.name, 32, "SR-%d_%dx%d@%.02f%s", m_id, width, height, hz);
-	dmode.clock       = pixel_clock  / 1000;
-	dmode.hdisplay    = width;
-	dmode.hsync_start = hfp;
-	dmode.hsync_end   = hsp;
-	dmode.htotal      = hbp;
-	dmode.vdisplay    = height;
-	dmode.vsync_start = vfp;
-	dmode.vsync_end   = vsp;
-	dmode.vtotal      = vbp;
-	dmode.flags       = 10;
+                        // Create specific mode name
+                        snprintf(dmode.name, 32, "SR-%d_%dx%d@%.02f%s", m_id, width, height, hz);
+                        dmode.clock       = pixel_clock  / 1000;
+                        dmode.hdisplay    = width;
+                        dmode.hsync_start = hfp;
+                        dmode.hsync_end   = hsp;
+                        dmode.htotal      = hbp;
+                        dmode.vdisplay    = height;
+                        dmode.vsync_start = vfp;
+                        dmode.vsync_end   = vsp;
+                        dmode.vtotal      = vbp;
+                        dmode.flags       = 10;
 
-	dmode.hskew       = 0;
-	dmode.vscan       = 0;
+                        dmode.hskew       = 0;
+                        dmode.vscan       = 0;
 
-	dmode.vrefresh    = hz;	// Used only for human readable output
+                        dmode.vrefresh    = hz;	// Used only for human readable output
 
-	dmode.type        = DRM_MODE_TYPE_USERDEF;	//DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
+                        dmode.type        = DRM_MODE_TYPE_USERDEF;	//DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
 
-   drmModeModeInfo *mode = &dmode;
+                        drmModeModeInfo *mode = &dmode;
 
-	//mode->type |= CUSTOM_VIDEO_TIMING_DRMKMS;
+                        //mode->type |= CUSTOM_VIDEO_TIMING_DRMKMS;
+
+                           drmModeFB *pframebuffer = drmModeGetFB(m_drm_fd, mp_crtc_desktop->buffer_id);
+                           drmModeSetCrtc(m_drm_fd, mp_crtc_desktop->crtc_id, mp_crtc_desktop->buffer_id, mp_crtc_desktop->x, mp_crtc_desktop->y, &m_desktop_output, 1, &mp_crtc_desktop->mode);
+
+                           			drm_mode_create_dumb create_dumb = {};
+                                    create_dumb.width = dmode.hdisplay;
+                                    create_dumb.height = dmode.vdisplay;
+                                    create_dumb.bpp = pframebuffer->bpp;
+                                    drm_mode_map_dumb map_dumb = {};
+                                    map_dumb.handle = create_dumb.handle;
+
+                                    				memset(map, 0, create_dumb.size);
+
+                                                		drmModeFreeFB(pframebuffer);
+
+                           pframebuffer = drmModeGetFB(m_drm_fd, framebuffer_id);
+
+                           drmModeFreeFB(pframebuffer);
+                           
+                           int ret = ioctl(m_drm_fd, DRM_IOCTL_MODE_DESTROY_DUMB, &old_dumb_handle);
+
+                           drmModeRmFB(m_drm_fd, m_framebuffer_id);
+				               m_framebuffer_id = 0;
 
 
-		drmModeSetCrtc(m_drm_fd, mp_crtc_desktop->crtc_id, mp_crtc_desktop->buffer_id, mp_crtc_desktop->x, mp_crtc_desktop->y, &m_desktop_output, 1, &mp_crtc_desktop->mode);
-		if (m_dumb_handle)
-		{
-			int ret = ioctl(m_drm_fd, DRM_IOCTL_MODE_DESTROY_DUMB, &m_dumb_handle);
-			if (ret)
-
-			m_dumb_handle = 0;
-		}
-		if (m_framebuffer_id && m_framebuffer_id != mp_crtc_desktop->buffer_id)
-		{
-			m_framebuffer_id = 0;
-		}
 
 
 
-
-
-
-
-
+                        drmDropMaster(m_drm_fd);
 
 
 
