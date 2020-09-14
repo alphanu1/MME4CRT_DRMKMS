@@ -499,7 +499,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 	drmModeModeInfo dmode = {};
 
 	// Create specific mode name
-	snprintf(dmode.name, 32, "SR-%d_%dx%d@%.02f%s", m_id, mode->hactive, mode->vactive, mode->vfreq, mode->interlace ? "i" : "");
+	snprintf(dmode.name, 32, "SR-%d_%dx%d@%.02f%s", m_id, width, height, hz);
 	dmode.clock       = pixel_clock  / 1000;
 	dmode.hdisplay    = mode->width;
 	dmode.hsync_start = mode->hfp;
@@ -509,12 +509,12 @@ static void crt_kms_switch(unsigned width, unsigned height,
 	dmode.vsync_start = mode->vfp;
 	dmode.vsync_end   = mode->csp;
 	dmode.vtotal      = mode->vbp;
-	dmode.flags       = (mode->interlace ? DRM_MODE_FLAG_INTERLACE : 0) | (mode->doublescan ? DRM_MODE_FLAG_DBLSCAN : 0) | (mode->hsync ? DRM_MODE_FLAG_PHSYNC : DRM_MODE_FLAG_NHSYNC) | (mode->vsync ? DRM_MODE_FLAG_PVSYNC : DRM_MODE_FLAG_NVSYNC);
+	dmode.flags       = 10;
 
 	dmode.hskew       = 0;
 	dmode.vscan       = 0;
 
-	dmode.vrefresh    = mode->refresh;	// Used only for human readable output
+	dmode.vrefresh    = hz;	// Used only for human readable output
 
 	dmode.type        = DRM_MODE_TYPE_USERDEF;	//DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
 
