@@ -414,6 +414,22 @@ static void crt_kms_switch(unsigned width, unsigned height,
    int int_hz, float hz, int center, int monitor_index, 
    int xoffset, int padjust)
 {
+   int i                               = 0;
+   int hfp                             = 0;
+   int hsp                             = 0;
+   int hbp                             = 0;
+   int vfp                             = 0;
+   int vsp                             = 0;
+   int vbp                             = 0;
+   int hmax                            = 0;
+   int vmax                            = 0;
+   int pdefault                        = 8;
+   int pwidth                          = 0;
+   int ip_flag                         = 0;
+   float roundw                        = 0.0f;
+   float roundh                        = 0.0f;
+   float pixel_clock                   = 0.0f;
+
    int screen_pos = -1;
    int m_id = 0;
 	int m_drm_fd = 0;
@@ -476,15 +492,50 @@ static void crt_kms_switch(unsigned width, unsigned height,
                      drmModeEncoder *p_encoder = drmModeGetEncoder(m_drm_fd, p_connector->encoder_id);
                      if (p_encoder)
 					   	{
-								for (int e = 0; e < p_res->count_crtcs; e++)
-								{
-									mp_crtc_desktop = drmModeGetCrtc(m_drm_fd, p_res->crtcs[e]);
+                         /* Run switching code here */	
+                     drmSetMaster(m_drm_fd);
 
-									//if (mp_crtc_desktop->crtc_id == p_encoder->crtc_id)
-									//{
-                              
+	// Setup the DRM mode structure
+	drmModeModeInfo dmode = {};
 
-                           //printf(p_res->crtcs[e]);
+	// Create specific mode name
+	snprintf(dmode.name, 32, "SR-%d_%dx%d@%.02f%s", m_id, mode->hactive, mode->vactive, mode->vfreq, mode->interlace ? "i" : "");
+	dmode.clock       = pixel_clock  / 1000;
+	dmode.hdisplay    = mode->width;
+	dmode.hsync_start = mode->hfp;
+	dmode.hsync_end   = mode->hsp;
+	dmode.htotal      = mode->hbp;
+	dmode.vdisplay    = mode->height;
+	dmode.vsync_start = mode->vfp;
+	dmode.vsync_end   = mode->csp;
+	dmode.vtotal      = mode->vbp;
+	dmode.flags       = (mode->interlace ? DRM_MODE_FLAG_INTERLACE : 0) | (mode->doublescan ? DRM_MODE_FLAG_DBLSCAN : 0) | (mode->hsync ? DRM_MODE_FLAG_PHSYNC : DRM_MODE_FLAG_NHSYNC) | (mode->vsync ? DRM_MODE_FLAG_PVSYNC : DRM_MODE_FLAG_NVSYNC);
+
+	dmode.hskew       = 0;
+	dmode.vscan       = 0;
+
+	dmode.vrefresh    = mode->refresh;	// Used only for human readable output
+
+	dmode.type        = DRM_MODE_TYPE_USERDEF;	//DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
+
+	mode->type |= CUSTOM_VIDEO_TIMING_DRMKMS;
+
+	if (mode->platform_data == 4815162342)
+	{
+
+		drmModeSetCrtc(m_drm_fd, mp_crtc_desktop->crtc_id, mp_crtc_desktop->buffer_id, mp_crtc_desktop->x, mp_crtc_desktop->y, &m_desktop_output, 1, &mp_crtc_desktop->mode);
+		if (m_dumb_handle)
+		{
+			int ret = ioctl(m_drm_fd, DRM_IOCTL_MODE_DESTROY_DUMB, &m_dumb_handle);
+			if (ret)
+
+			m_dumb_handle = 0;
+		}
+		if (m_framebuffer_id && m_framebuffer_id != mp_crtc_desktop->buffer_id)
+		{
+			m_framebuffer_id = 0;
+		}
+	}
 
 
 
@@ -493,12 +544,18 @@ static void crt_kms_switch(unsigned width, unsigned height,
 
 
 
-										printf("DRM/KMS: <%d> (init) desktop mode name %s crtc %d fb %d valid %d\n", m_id, mp_crtc_desktop->mode.name, mp_crtc_desktop->crtc_id, mp_crtc_desktop->buffer_id, mp_crtc_desktop->mode_valid);
-										//printf("\n");
-                              //break;
-									//}
-									drmModeFreeCrtc(mp_crtc_desktop);
-								}
+
+
+
+
+
+
+
+
+
+
+
+
 							}
 							   drmModeFreeEncoder(p_encoder);
                   }
