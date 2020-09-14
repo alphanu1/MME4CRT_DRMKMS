@@ -520,7 +520,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 
    drmModeModeInfo *mode = &dmode;
 
-	mode->type |= CUSTOM_VIDEO_TIMING_DRMKMS;
+	//mode->type |= CUSTOM_VIDEO_TIMING_DRMKMS;
 
 	if (mode->platform_data == 4815162342)
 	{
