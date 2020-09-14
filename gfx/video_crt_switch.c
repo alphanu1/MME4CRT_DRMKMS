@@ -495,6 +495,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
                          /* Run switching code here */	
                         drmSetMaster(m_drm_fd);
                         unsigned int m_framebuffer_id = 0;
+                        unsigned int framebuffer_id = mp_crtc_desktop->buffer_id;
 
                         // Setup the DRM mode structure
                         drmModeModeInfo dmode = {};
