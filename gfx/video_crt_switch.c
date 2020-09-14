@@ -28,6 +28,7 @@
 #include "../config.h"
 #endif
 
+
 #if defined(HAVE_VIDEOCORE)
 #include "include/userland/interface/vmcs_host/vc_vchi_gencmd.h"
 static void crt_rpi_switch(int width, int height, float hz, int xoffset);
@@ -490,6 +491,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 
 
 
+
 										printf("DRM/KMS: <%d> (init) desktop mode name %s crtc %d fb %d valid %d\n", m_id, mp_crtc_desktop->mode.name, mp_crtc_desktop->crtc_id, mp_crtc_desktop->buffer_id, mp_crtc_desktop->mode_valid);
 										//printf("\n");
                               break;
@@ -497,7 +499,6 @@ static void crt_kms_switch(unsigned width, unsigned height,
 									drmModeFreeCrtc(mp_crtc_desktop);
 								}*/
 							}
-                     if (mp_crtc_desktop)
 							   drmModeFreeEncoder(p_encoder);
                   }
                   output_position++;
@@ -559,5 +560,7 @@ const char *get_connector_name(int mode)
 			return "not_defined-";
 	}
 }
+
+
 
 #endif
