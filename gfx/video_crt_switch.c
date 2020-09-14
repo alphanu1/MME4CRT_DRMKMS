@@ -525,10 +525,10 @@ static void crt_kms_switch(unsigned width, unsigned height,
                            drmModeFB *pframebuffer = drmModeGetFB(m_drm_fd, mp_crtc_desktop->buffer_id);
                            drmModeSetCrtc(m_drm_fd, mp_crtc_desktop->crtc_id, mp_crtc_desktop->buffer_id, mp_crtc_desktop->x, mp_crtc_desktop->y, &m_desktop_output, 1, &mp_crtc_desktop->mode);
 
-                           			drm_mode_create_dumb create_dumb = {};
-                                    create_dumb.width = dmode.hdisplay;
-                                    create_dumb.height = dmode.vdisplay;
-                                    create_dumb.bpp = pframebuffer->bpp;
+                           			//drm_mode_create_dumb create_dumb = {};
+                                    //create_dumb.width = dmode.hdisplay;
+                                    //create_dumb.height = dmode.vdisplay;
+                                    //create_dumb.bpp = pframebuffer->bpp;
                                     //drm_mode_map_dumb map_dumb = {};
                                    // map_dumb.handle = create_dumb.handle;
 
@@ -540,7 +540,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 
                            drmModeFreeFB(pframebuffer);
                            
-                           int ret = ioctl(m_drm_fd, DRM_IOCTL_MODE_DESTROY_DUMB, &old_dumb_handle);
+                           //int ret = ioctl(m_drm_fd, DRM_IOCTL_MODE_DESTROY_DUMB, &old_dumb_handle);
 
                            drmModeRmFB(m_drm_fd, m_framebuffer_id);
 				               m_framebuffer_id = 0;
