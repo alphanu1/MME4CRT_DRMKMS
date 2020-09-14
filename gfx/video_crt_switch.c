@@ -522,8 +522,6 @@ static void crt_kms_switch(unsigned width, unsigned height,
 
 	//mode->type |= CUSTOM_VIDEO_TIMING_DRMKMS;
 
-	if (mode->platform_data == 4815162342)
-	{
 
 		drmModeSetCrtc(m_drm_fd, mp_crtc_desktop->crtc_id, mp_crtc_desktop->buffer_id, mp_crtc_desktop->x, mp_crtc_desktop->y, &m_desktop_output, 1, &mp_crtc_desktop->mode);
 		if (m_dumb_handle)
@@ -537,7 +535,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 		{
 			m_framebuffer_id = 0;
 		}
-	}
+
 
 
 
