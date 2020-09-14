@@ -529,8 +529,8 @@ static void crt_kms_switch(unsigned width, unsigned height,
                                     create_dumb.width = dmode.hdisplay;
                                     create_dumb.height = dmode.vdisplay;
                                     create_dumb.bpp = pframebuffer->bpp;
-                                    drm_mode_map_dumb map_dumb = {};
-                                    map_dumb.handle = create_dumb.handle;
+                                    //drm_mode_map_dumb map_dumb = {};
+                                   // map_dumb.handle = create_dumb.handle;
 
                                     				//memset(map, 0, create_dumb.size);
 
