@@ -507,7 +507,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 	dmode.htotal      = hbp;
 	dmode.vdisplay    = height;
 	dmode.vsync_start = vfp;
-	dmode.vsync_end   = csp;
+	dmode.vsync_end   = vsp;
 	dmode.vtotal      = vbp;
 	dmode.flags       = 10;
 
