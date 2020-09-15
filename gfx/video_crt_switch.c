@@ -536,16 +536,16 @@ static void crt_kms_switch(unsigned width, unsigned height,
 
                                     				//memset(map, 0, create_dumb.size);
 
-                                                		drmModeFreeFB(pframebuffer);
-
-                           pframebuffer = drmModeGetFB(m_drm_fd, framebuffer_id);
-
                            drmModeFreeFB(pframebuffer);
+
+                          // pframebuffer = drmModeGetFB(m_drm_fd, framebuffer_id);
+
+                           //drmModeFreeFB(pframebuffer);
                            
                            //int ret = ioctl(m_drm_fd, DRM_IOCTL_MODE_DESTROY_DUMB, &old_dumb_handle);
 
-                           drmModeRmFB(m_drm_fd, m_framebuffer_id);
-				               m_framebuffer_id = 0;
+                           //drmModeRmFB(m_drm_fd, m_framebuffer_id);
+				               //m_framebuffer_id = 0;
 
 
 
