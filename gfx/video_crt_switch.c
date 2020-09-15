@@ -554,7 +554,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 
                         drmDropMaster(m_drm_fd);
 
-                        drmModeFreeCrtc()
+                        drmModeFreeCrtc(mp_crtc_desktop);
 
 
 
