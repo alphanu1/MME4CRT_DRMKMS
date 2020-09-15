@@ -523,7 +523,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
                         drmModeModeInfo *mode = &dmode;
 
                         //mode->type |= CUSTOM_VIDEO_TIMING_DRMKMS;
-                        mp_crtc_desktop = drmModeGetCrtc(m_drm_fd, p_res->crtcs[1]);
+                        mp_crtc_desktop = drmModeGetCrtc(m_drm_fd, p_res->crtcs[0]);
 
                            drmModeFB *pframebuffer = drmModeGetFB(m_drm_fd, mp_crtc_desktop->buffer_id);
                            drmModeSetCrtc(m_drm_fd, mp_crtc_desktop->crtc_id, mp_crtc_desktop->buffer_id, mp_crtc_desktop->x, mp_crtc_desktop->y, &m_desktop_output, 1, &mp_crtc_desktop->mode);
@@ -539,13 +539,13 @@ static void crt_kms_switch(unsigned width, unsigned height,
 
                            drmModeFreeFB(pframebuffer);
 
-                          // pframebuffer = drmModeGetFB(m_drm_fd, framebuffer_id);
+                           pframebuffer = drmModeGetFB(m_drm_fd, framebuffer_id);
 
-                           //drmModeFreeFB(pframebuffer);
+                           drmModeFreeFB(pframebuffer);
                            
                            //int ret = ioctl(m_drm_fd, DRM_IOCTL_MODE_DESTROY_DUMB, &old_dumb_handle);
 
-                           //drmModeRmFB(m_drm_fd, m_framebuffer_id);
+                           drmModeRmFB(m_drm_fd, m_framebuffer_id);
 				               //m_framebuffer_id = 0;
 
 
