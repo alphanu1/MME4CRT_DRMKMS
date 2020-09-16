@@ -565,7 +565,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 // ret = modeset_create_dumbfb(drm.fd, &buf, 4, DRM_FORMAT_XRGB8888);
 
 
-
+int ret = 0;
    int screen_pos = -1;
    int m_id = 0;
 	int m_drm_fd = 0;
@@ -666,21 +666,24 @@ static void crt_kms_switch(unsigned width, unsigned height,
 			create_dumb.height = dmode.vdisplay;
 			create_dumb.bpp = pframebuffer->bpp;
 
-
+ioctl(m_drm_fd, DRM_IOCTL_MODE_CREATE_DUMB, &create_dumb);
 drmModeAddFB(m_drm_fd, dmode.hdisplay, dmode.vdisplay, pframebuffer->depth, pframebuffer->bpp, create_dumb.pitch, create_dumb.handle, &framebuffer_id);
 
 
+struct drm_mode_map_dumb map_dumb = {};
+			map_dumb.handle = create_dumb.handle;
+
+			ret = drmIoctl(m_drm_fd, DRM_IOCTL_MODE_MAP_DUMB, &map_dumb);
 
 
-
-
-
-                           drmModeSetCrtc(m_drm_fd, mp_crtc_desktop->crtc_id, mp_crtc_desktop->buffer_id, mp_crtc_desktop->x, mp_crtc_desktop->y, &m_desktop_output, 1, &mp_crtc_desktop->mode);
+pframebuffer = drmModeGetFB(m_drm_fd, framebuffer_id);
 
 for (int e = 0; e < p_res->count_crtcs; e++)
 								{
                            mp_crtc_desktop = drmModeGetCrtc(m_drm_fd, p_res->crtcs[e]);
 
+
+                           drmModeSetCrtc(m_drm_fd, mp_crtc_desktop->crtc_id, mp_crtc_desktop->buffer_id, mp_crtc_desktop->x, mp_crtc_desktop->y, &m_desktop_output, 1, &mp_crtc_desktop->mode);
 
 										printf("DRM/KMS: <%d> (init) desktop mode name %s crtc %d fb %d valid %d\n", m_id, mp_crtc_desktop->mode.name, mp_crtc_desktop->crtc_id, mp_crtc_desktop->buffer_id, mp_crtc_desktop->mode_valid);
 							
