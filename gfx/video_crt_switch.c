@@ -19,6 +19,7 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include "drivers/drm_gfx.c"
 
 #include "../retroarch.h"
 #include "video_crt_switch.h"
@@ -34,6 +35,18 @@
 static void crt_rpi_switch(int width, int height, float hz, int xoffset);
 #endif
 
+struct modeset_fbuf
+{
+	uint32_t width;
+	uint32_t height;
+	uint32_t stride;
+	uint32_t size;
+	uint32_t handle;
+	uint8_t *map;
+	uint32_t fb_id;
+	uint32_t pixel_format;
+};
+
 #if defined(HAVE_KMS)
 #include <xf86drm.h>
 #include <xf86drmMode.h>
@@ -45,11 +58,17 @@ static void crt_rpi_switch(int width, int height, float hz, int xoffset);
 #include <sys/ioctl.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
+#include <drm_fourcc.h>
+//#include <libkms.h>
 static void crt_kms_switch(unsigned width, unsigned height, 
    int int_hz, float hz, int center, int monitor_index, 
    int xoffset, int padjust);
 const char *get_connector_name(int mode);
 #endif
+int fbuffer = 1;
+
+
+
 
 static void switch_crt_hz(videocrt_switch_t *p_switch)
 {
@@ -414,7 +433,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
    int int_hz, float hz, int center, int monitor_index, 
    int xoffset, int padjust)
 {
-   int i                               = 0;
+  // int i                               = 0;
    int hfp                             = 0;
    int hsp                             = 0;
    int hbp                             = 0;
@@ -429,6 +448,123 @@ static void crt_kms_switch(unsigned width, unsigned height,
    float roundw                        = 0.0f;
    float roundh                        = 0.0f;
    float pixel_clock                   = 0.0f;
+
+   video_monitor_set_refresh_rate(hz);
+
+   /* following code is the mode line generator */
+   hsp    = (width * 0.117) - (xoffset*4);
+   if (width < 700)
+   {
+      hfp    = (width * 0.065);
+      hbp  = width * 0.35-hsp-hfp;
+   }
+   else
+   {
+      hfp  = (width * 0.033) + (width / 112);
+      hbp  = (width * 0.225) + (width /58);
+      xoffset = xoffset*2;
+   }
+   
+   hmax = hbp;
+
+   if (height < 241)
+      vmax = 261;
+   if (height < 241 && hz > 56 && hz < 58)
+      vmax = 280;
+   if (height < 241 && hz < 55)
+      vmax = 313;
+   if (height > 250 && height < 260 && hz > 54)
+      vmax = 296;
+   if (height > 250 && height < 260 && hz > 52 && hz < 54)
+      vmax = 285;
+   if (height > 250 && height < 260 && hz < 52)
+      vmax = 313;
+   if (height > 260 && height < 300)
+      vmax = 318;
+
+   if (height > 400 && hz > 56)
+      vmax = 533;
+   if (height > 520 && hz < 57)
+      vmax = 580;
+
+   if (height > 300 && hz < 56)
+      vmax = 615;
+   if (height > 500 && hz < 56)
+      vmax = 624;
+   if (height > 300)
+      pdefault = pdefault * 2;
+
+   vfp = (height + ((vmax - height) / 2) - pdefault) - height;
+
+   if (height < 300)
+      vsp = vfp + 3; /* needs to be 3 for progressive */
+   if (height > 300)
+      vsp = vfp + 6; /* needs to be 6 for interlaced */
+
+   vsp  = 3;
+   vbp  = (vmax-height)-vsp-vfp;
+   hmax = width+hfp+hsp+hbp;
+
+   if (height < 300)
+   {
+      pixel_clock = (hmax * vmax * hz) ;
+      ip_flag     = 0;
+   }
+
+   if (height > 300)
+   {
+      pixel_clock = (hmax * vmax * (hz/2)) /2 ;
+      ip_flag     = 1;
+   }
+
+//    int fd = 5;
+
+//  struct modeset_buf fbuf;
+//  fbuf.width = width;
+//  fbuf.height = height;
+
+
+//  int ret;
+//    drmModeConnector *connector;
+//    uint i;
+
+//    drm.fd = open("/dev/dri/card0", O_RDWR);
+//    ret = drmSetClientCap(drm.fd, DRM_CLIENT_CAP_UNIVERSAL_PLANES, 1);
+//    ret = drmSetClientCap(drm.fd, DRM_CLIENT_CAP_ATOMIC, 1);
+// drm.resources = drmModeGetResources(drm.fd);
+// connector = drmModeGetConnector(drm.fd, drm.resources->connectors[0]);
+// drm.encoder = drmModeGetEncoder(drm.fd, drm.resources->encoders[0]);
+// drmModeFreeEncoder(drm.encoder);
+
+// drmModeFreeConnector(connector);
+
+// ret = modeset_create_dumbfb(drm.fd, &fbuf, 4, DRM_FORMAT_XRGB8888);
+
+// drm.crtc_id = drm.encoder->crtc_id;
+// drm.connector_id = connector->connector_id;
+// drm.orig_crtc = drmModeGetCrtc(drm.fd, drm.encoder->crtc_id);
+// drm.current_mode = &(drm.orig_crtc->mode);
+
+// struct _drmModeModeInfo *NewDrmMode = &(drm.orig_crtc->mode);
+
+// NewDrmMode->clock = pixel_clock / 1000;
+// NewDrmMode->hdisplay = width;
+// NewDrmMode->vdisplay = height;
+// NewDrmMode->hsync_start = hbp;
+// NewDrmMode->hsync_end = hsp;
+// NewDrmMode->htotal = hfp;
+// NewDrmMode->vsync_start = vbp;
+// NewDrmMode->vsync_end = vsp;
+// NewDrmMode->vtotal = vfp;
+// NewDrmMode->hskew = 0;
+// NewDrmMode->vscan = 0;
+
+// drmModeSetCrtc(drm.fd, drm.crtc_id, fbuf.fb_id, 0, 0,
+//             &drm.connector_id, 1, NewDrmMode);
+
+// ret = modeset_create_dumbfb(drm.fd, &buf, 4, DRM_FORMAT_XRGB8888);
+
+
 
    int screen_pos = -1;
    int m_id = 0;
@@ -522,20 +658,26 @@ static void crt_kms_switch(unsigned width, unsigned height,
 
                         drmModeModeInfo *mode = &dmode;
 
-                        //mode->type |= CUSTOM_VIDEO_TIMING_DRMKMS;
-//mp_crtc_desktop = drmModeGetCrtc(m_drm_fd, p_res->crtcs[0]);
 
                            drmModeFB *pframebuffer = drmModeGetFB(m_drm_fd, mp_crtc_desktop->buffer_id);
+
+			struct drm_mode_create_dumb create_dumb = {};
+			create_dumb.width = dmode.hdisplay;
+			create_dumb.height = dmode.vdisplay;
+			create_dumb.bpp = pframebuffer->bpp;
+
+
+drmModeAddFB(m_drm_fd, dmode.hdisplay, dmode.vdisplay, pframebuffer->depth, pframebuffer->bpp, create_dumb.pitch, create_dumb.handle, &framebuffer_id);
+
+
+
+
+
+
+
                            drmModeSetCrtc(m_drm_fd, mp_crtc_desktop->crtc_id, mp_crtc_desktop->buffer_id, mp_crtc_desktop->x, mp_crtc_desktop->y, &m_desktop_output, 1, &mp_crtc_desktop->mode);
 
-                           	//		drm_mode_create_dumb create_dumb = {};
-                               //     create_dumb.width = dmode.hdisplay;
-                                 //   create_dumb.height = dmode.vdisplay;
-                                  //  create_dumb.bpp = pframebuffer->bpp;
-                                   // drm_mode_map_dumb map_dumb = {};
-                                    //map_dumb.handle = create_dumb.handle;
 
-                                    				//memset(map, 0, create_dumb.size);
 
                            drmModeFreeFB(pframebuffer);
 
@@ -631,6 +773,7 @@ const char *get_connector_name(int mode)
 			return "not_defined-";
 	}
 }
+
 
 
 
