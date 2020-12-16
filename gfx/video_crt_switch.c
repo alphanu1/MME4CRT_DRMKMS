@@ -696,7 +696,7 @@ for (int e = 0; e < p_res->count_crtcs; e++)
                            pframebuffer = drmModeGetFB(m_drm_fd, framebuffer_id);
 
                            drmModeFreeFB(pframebuffer);
-                           drmModeSetCrtc(m_drm_fd, mp_crtc_desktop->crtc_id, framebuffer_id, 0, 0, &m_desktop_output, 1, &dmode)
+                           drmModeSetCrtc(m_drm_fd, mp_crtc_desktop->crtc_id, framebuffer_id, 0, 0, &m_desktop_output, 1, &dmode);
                            //int ret = ioctl(m_drm_fd, DRM_IOCTL_MODE_DESTROY_DUMB, &old_dumb_handle);
 
                            drmModeRmFB(m_drm_fd, m_framebuffer_id);
