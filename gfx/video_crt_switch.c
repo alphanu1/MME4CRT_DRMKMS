@@ -690,12 +690,8 @@ for (int e = 0; e < p_res->count_crtcs; e++)
 
                            drmModeFreeCrtc(mp_crtc_desktop);
                         }
+                        drmModeAddFB(m_drm_fd, dmode.hdisplay, dmode.vdisplay, pframebuffer->depth, pframebuffer->bpp, create_dumb.pitch, create_dumb.handle, &framebuffer_id))
 
-                        			drm_mode_create_dumb create_dumb = {};
-			create_dumb.width = dmode.hdisplay;
-			create_dumb.height = dmode.vdisplay;
-			create_dumb.bpp = pframebuffer->bpp;
-                           drmModeFreeFB(pframebuffer);
 
                            pframebuffer = drmModeGetFB(m_drm_fd, framebuffer_id);
 
