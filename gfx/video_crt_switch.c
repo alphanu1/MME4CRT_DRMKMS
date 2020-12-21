@@ -96,6 +96,21 @@ typedef struct modeline
 	mode_result result;
 } modeline;
 
+int m_id = 0;
+
+		int m_drm_fd = 0;
+		drmModeCrtc *mp_crtc_desktop = NULL;
+		int m_card_id = 0;
+		int drm_master_hook(int fd);
+
+		char m_device_name[32];
+		unsigned int m_desktop_output = 0;
+		int m_video_modes_position = 0;
+
+		void *mp_drm_handle = NULL;
+		unsigned int m_dumb_handle = 0;
+		unsigned int m_framebuffer_id = 0;
+
 //#include <libkms.h>
 static void crt_kms_switch(unsigned width, unsigned height, 
    int int_hz, float hz, int center, int monitor_index, 
