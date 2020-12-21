@@ -624,28 +624,28 @@ static void crt_kms_switch(unsigned width, unsigned height,
 
 // ret = modeset_create_dumbfb(drm.fd, &buf, 4, DRM_FORMAT_XRGB8888);
 
-struct _drmModeModeInfo dmode;
+struct modeline dmode;
                         // Create specific mode name
                         snprintf(dmode.name, 32, "SR-%d_%dx%d@%.02f%s", m_id, width, height, hz);
-                        dmode.clock       = pixel_clock  / 1000;
-                        dmode.hdisplay    = width;
-                        dmode.hsync_start = hfp;
-                        dmode.hsync_end   = hsp;
+                        //dmode.       = pixel_clock  / 1000;
+                        dmode.hactive    = width;
+                        dmode.hbegin = hfp;
+                        dmode.hend   = hsp;
                         dmode.htotal      = hbp;
-                        dmode.vdisplay    = height;
-                        dmode.vsync_start = vfp;
-                        dmode.vsync_end   = vsp;
+                        dmode.vactive    = height;
+                        dmode.vbegin = vfp;
+                        dmode.vend   = vsp;
                         dmode.vtotal      = vbp;
                         dmode.flags       = 10;
 
                         dmode.hskew       = 0;
                         dmode.vscan       = 0;
 
-                        dmode.vrefresh    = hz;	// Used only for human readable output
+                        dmode.vfreq    = hz;	// Used only for human readable output
 
                         dmode.type        = DRM_MODE_TYPE_USERDEF;	//DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
 
-                        drmModeModeInfo *mode = &dmode;
+                        drmModeModeInfo *modeline = &dmode;
    update_mode(mode);
 
 }
