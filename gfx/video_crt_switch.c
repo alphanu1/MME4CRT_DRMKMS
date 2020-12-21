@@ -93,7 +93,7 @@ typedef struct modeline
 	int    range;
 	uint64_t platform_data;
 	//
-	mode_result result;
+	//mode_result result;
 } modeline;
 
 
@@ -622,7 +622,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 
 // ret = modeset_create_dumbfb(drm.fd, &buf, 4, DRM_FORMAT_XRGB8888);
 
-struct _drmModeModeInfo dmode = null;
+struct _drmModeModeInfo dmode;
                         // Create specific mode name
                         snprintf(dmode.name, 32, "SR-%d_%dx%d@%.02f%s", m_id, width, height, hz);
                         dmode.clock       = pixel_clock  / 1000;
