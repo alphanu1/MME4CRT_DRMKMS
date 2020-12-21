@@ -646,7 +646,7 @@ struct modeline dmode;
                         dmode.type        = DRM_MODE_TYPE_USERDEF;	//DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
 
                         drmModeModeInfo *modeline = &dmode;
-   update_mode(mode);
+   update_mode(modeline);
 
 }
 
