@@ -1136,7 +1136,7 @@ bool set_timing(modeline *mode)
 
 	dmode.type        = DRM_MODE_TYPE_USERDEF;	//DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
 
-	mode->type |= CUSTOM_VIDEO_TIMING_DRMKMS;
+	mode->type |= DRM_MODE_TYPE_USERDEF;
 
 	if (mode->platform_data == 4815162342)
 	{
@@ -1174,10 +1174,10 @@ bool set_timing(modeline *mode)
 			//log_verbose("DRM/KMS: <%d> (add_mode) <debug> creating new frame buffer with size %dx%d\n", m_id, dmode.hdisplay, dmode.vdisplay);
 
 			// create a new dumb fb (not driver specefic)
-			//drm_mode_create_dumb create_dumb = {};
-			//create_dumb.width = dmode.hdisplay;
-			//create_dumb.height = dmode.vdisplay;
-			//create_dumb.bpp = pframebuffer->bpp;
+			drm_mode_create_dumb create_dumb;
+			create_dumb.width = dmode.hdisplay;
+			create_dumb.height = dmode.vdisplay;
+			create_dumb.bpp = pframebuffer->bpp;
 
 			int ret = ioctl(m_drm_fd, DRM_IOCTL_MODE_CREATE_DUMB, &create_dumb);
 			//if (ret)
@@ -1231,7 +1231,7 @@ bool set_timing(modeline *mode)
 				m_framebuffer_id = 0;
 			}
 			m_framebuffer_id = framebuffer_id;
-		}
+		} 
 	}
 	drmDropMaster(m_drm_fd);
 
