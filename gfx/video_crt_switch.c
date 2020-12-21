@@ -482,6 +482,8 @@ static void crt_kms_switch(unsigned width, unsigned height,
 
    video_monitor_set_refresh_rate(hz);
 
+   drmkms_init();
+
    /* following code is the mode line generator */
    hsp    = (width * 0.117) - (xoffset*4);
    if (width < 700)
@@ -596,77 +598,6 @@ static void crt_kms_switch(unsigned width, unsigned height,
 // ret = modeset_create_dumbfb(drm.fd, &buf, 4, DRM_FORMAT_XRGB8888);
 
 
-int ret = 0;
-   int screen_pos = -1;
-   int m_id = 0;
-	int m_drm_fd = 0;
-	int m_card_id = 0;
-	int drm_master_hook(int fd);
-	char m_device_name[32] = {};
-	unsigned int m_desktop_output = 0;
-	int m_video_modes_position = 0;
-	void *mp_drm_handle = NULL;
-	unsigned int m_dumb_handle = 0;
-	unsigned int m_framebuffer_id = 0;
-   drmModeCrtc *mp_crtc_desktop = NULL;
-   //mp_drm_handle = dlopen("libdrm.so", RTLD_NOW);
-
-
-   if (strlen(m_device_name) == 7 && !strncmp(m_device_name, "screen", 6) && m_device_name[6] >= '0' && m_device_name[6] <= '9')
-		screen_pos = m_device_name[6] - '0';
-	else if (strlen(m_device_name) == 1 && m_device_name[0] >= '0' && m_device_name[0] <= '9')
-		screen_pos = m_device_name[0] - '0';
-
-   char drm_name[15] = "/dev/dri/card_";
-   drmModeRes *p_res;
-	drmModeConnector *p_connector;
-
-   int output_position = 0;
-	for (int num = 0; !m_desktop_output && num < 2; num++)
-	{
-		drm_name[13] = '0' + num;
-      m_drm_fd = open(drm_name, O_RDWR);
-      
-      if (m_drm_fd > 0)
-		{
-			drmVersion *version = drmGetVersion(m_drm_fd);
-
-			uint64_t check_dumb = 0;
-
-			p_res = drmModeGetResources(m_drm_fd);
-
-         printf("\n\n%s %d %d %s",drm_name, m_drm_fd,  version);
-         drmFreeVersion(version);
-         printf("\n\n");
-         printf(drmModeGetResources(m_drm_fd));
-          printf("\n\n");
-			for (int i = 0; i  < 1; i++)
-			{
-            p_connector = drmModeGetConnector(m_drm_fd, p_res->connectors[0]); 
-            
-            if (p_connector)
-				{
-					char connector_name[100];
-					snprintf(connector_name, sizeof(connector_name), "%s%d", get_connector_name(p_connector->connector_type), p_connector->connector_type_id);
-				   printf(connector_name);
-               printf("\n\n");
-               if (p_connector->connection == DRM_MODE_CONNECTED)
-					{
-                 if (!strcmp(m_device_name, "auto") || !strcmp(m_device_name, connector_name) || output_position == screen_pos)
-						{
-                     m_desktop_output = p_connector->connector_id;
-							m_card_id = num;
-                     drmModeEncoder *p_encoder = drmModeGetEncoder(m_drm_fd, p_connector->encoder_id);
-                     if (p_encoder)
-					   	{
-                         /* Run switching code here */	
-                        drmSetMaster(m_drm_fd);
-                        unsigned int m_framebuffer_id = 0;
-                        unsigned int framebuffer_id = mp_crtc_desktop->buffer_id;
-
-                        // Setup the DRM mode structure
-                        drmModeModeInfo dmode = {};
-
                         // Create specific mode name
                         snprintf(dmode.name, 32, "SR-%d_%dx%d@%.02f%s", m_id, width, height, hz);
                         dmode.clock       = pixel_clock  / 1000;
@@ -688,86 +619,7 @@ int ret = 0;
                         dmode.type        = DRM_MODE_TYPE_USERDEF;	//DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
 
                         drmModeModeInfo *mode = &dmode;
-
-
-                           drmModeFB *pframebuffer = drmModeGetFB(m_drm_fd, mp_crtc_desktop->buffer_id);
-
-			struct drm_mode_create_dumb create_dumb = {};
-			create_dumb.width = dmode.hdisplay;
-			create_dumb.height = dmode.vdisplay;
-			create_dumb.bpp = pframebuffer->bpp;
-
-ioctl(m_drm_fd, DRM_IOCTL_MODE_CREATE_DUMB, &create_dumb);
-drmModeAddFB(m_drm_fd, dmode.hdisplay, dmode.vdisplay, pframebuffer->depth, pframebuffer->bpp, create_dumb.pitch, create_dumb.handle, &framebuffer_id);
-
-
-struct drm_mode_map_dumb map_dumb = {};
-			map_dumb.handle = create_dumb.handle;
-
-			ret = drmIoctl(m_drm_fd, DRM_IOCTL_MODE_MAP_DUMB, &map_dumb);
-
-
-pframebuffer = drmModeGetFB(m_drm_fd, framebuffer_id);
-
-for (int e = 0; e < p_res->count_crtcs; e++)
-								{
-                           mp_crtc_desktop = drmModeGetCrtc(m_drm_fd, p_res->crtcs[e]);
-
-                        
-                           drmModeSetCrtc(m_drm_fd, mp_crtc_desktop->crtc_id, framebuffer_id, 0, 0, &m_desktop_output, 1, &dmode);
-
-									//	printf("DRM/KMS: <%d> (init) desktop mode name %s crtc %d fb %d valid %d\n", m_id, mp_crtc_desktop->mode.name, mp_crtc_desktop->crtc_id, mp_crtc_desktop->buffer_id, mp_crtc_desktop->mode_valid);
-							
-
-                           drmModeFreeCrtc(mp_crtc_desktop);
-                        }
-                       
-
-
-                           pframebuffer = drmModeGetFB(m_drm_fd, framebuffer_id);
-
-                           drmModeFreeFB(pframebuffer);
-                          
-                           //int ret = ioctl(m_drm_fd, DRM_IOCTL_MODE_DESTROY_DUMB, &old_dumb_handle);
-
-                           drmModeRmFB(m_drm_fd, m_framebuffer_id);
-				               m_framebuffer_id = 0;
-
-
-
-
-
-                        drmDropMaster(m_drm_fd);
-
-                        drmModeFreeCrtc(mp_crtc_desktop);
-
-
-
-
-
-
-
-
-
-
-
-
-
-							}
-							   drmModeFreeEncoder(p_encoder);
-                  }
-                  output_position++;
-                  
-               }
-               drmModeFreeConnector(p_connector);
-            } 
-
-         } 
-         drmModeFreeResources(p_res);
-         close(m_drm_fd);
-      }
-   }
-	
+   update_mode(mode);
 
 }
 
