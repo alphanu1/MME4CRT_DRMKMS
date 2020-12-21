@@ -1324,7 +1324,7 @@ bool get_timing(modeline *mode)
 
 	return true;
 }
-/*
+*/
 
 
 #endif
