@@ -1251,7 +1251,7 @@ bool delete_mode(modeline *mode)
 
 	return true;
 }
-*/
+/*
 bool get_timing(modeline *mode)
 {
 	// Handle no screen detected case
