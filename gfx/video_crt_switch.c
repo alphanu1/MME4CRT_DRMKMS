@@ -90,6 +90,37 @@ struct modeset_fbuf
  int s_shared_count[10] = {};
  int static_id = 0;
 
+typedef struct modeline
+{
+	uint64_t    pclock;
+	int    hactive;
+	int    hbegin;
+	int    hend;
+	int    htotal;
+	int    vactive;
+	int    vbegin;
+	int    vend;
+	int    vtotal;
+	int    interlace;
+	int    doublescan;
+	int    hsync;
+	int    vsync;
+	//
+	double vfreq;
+	double hfreq;
+	//
+	int    width;
+	int    height;
+	int    refresh;
+	int    refresh_label;
+	//
+	int    type;
+	int    range;
+	uint64_t platform_data;
+	//
+	mode_result result;
+} modeline;
+
 //#include <libkms.h>
 static void crt_kms_switch(unsigned width, unsigned height, 
    int int_hz, float hz, int center, int monitor_index, 
@@ -619,7 +650,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
                         dmode.type        = DRM_MODE_TYPE_USERDEF;	//DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
 
                         drmModeModeInfo *mode = &dmode;
-   //update_mode(mode);
+   //update_mode(mode)
 
 }
 
@@ -1025,7 +1056,7 @@ int drm_master_hook(int last_fd)
 	return 0;
 }
 
-bool update_mode(drmModeModeInfo *mode)
+bool update_mode(modeline *mode)
 {
 	if (!mode)
 		return false;
@@ -1051,7 +1082,7 @@ bool update_mode(drmModeModeInfo *mode)
 	return true;
 }
 
-bool add_mode(drmModeModeInfo *mode)
+bool add_mode(modeline *mode)
 {
 	if (!mode)
 		return false;
@@ -1075,7 +1106,7 @@ bool add_mode(drmModeModeInfo *mode)
 	return true;
 }
 
-bool set_timing(drmModeModeInfo *mode)
+bool set_timing(modeline *mode)
 {
 	if (!mode)
 		return false;
@@ -1214,7 +1245,7 @@ bool set_timing(drmModeModeInfo *mode)
 	return true;
 }
 
-bool delete_mode(drmModeModeInfo *mode)
+bool delete_mode(modeline *mode)
 {
 	if (!mode)
 		return false;
@@ -1229,7 +1260,7 @@ bool delete_mode(drmModeModeInfo *mode)
 	return true;
 }
 
-bool get_timing(drmModeModeInfo *mode)
+bool get_timing(modeline *mode)
 {
 	// Handle no screen detected case
 	if (!m_desktop_output)
