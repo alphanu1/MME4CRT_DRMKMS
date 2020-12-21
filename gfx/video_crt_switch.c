@@ -101,6 +101,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
    int int_hz, float hz, int center, int monitor_index, 
    int xoffset, int padjust);
 const char *get_connector_name(int mode);
+int drm_master_hook(int last_fd);
 #endif
 int fbuffer = 1;
 
