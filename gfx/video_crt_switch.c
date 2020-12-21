@@ -1043,7 +1043,7 @@ int drm_master_hook(int last_fd)
 	}
 	return 0;
 }
-/*
+
 bool update_mode(modeline *mode)
 {
 	if (!mode)
@@ -1322,7 +1322,7 @@ bool get_timing(modeline *mode)
 
 	return true;
 }
-*/
+
 
 
 #endif
