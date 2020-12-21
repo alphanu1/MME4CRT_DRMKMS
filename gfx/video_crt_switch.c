@@ -715,7 +715,7 @@ bool drmkms_init()
 {
 	//log_verbose("DRM/KMS: <%d> (init) loading DRM/KMS library\n", m_id);
 	mp_drm_handle = dlopen("libdrm.so", RTLD_NOW);
-	if (mp_drm_handle)
+/*	if (mp_drm_handle)
 	{
 		drmGetVersion = (drmGetVersion)dlsym(mp_drm_handle, "drmGetVersion");
 		if (drmGetVersion == NULL)
@@ -890,7 +890,7 @@ bool drmkms_init()
 		//log_error("DRM/KMS: <%d> (init) [ERROR] missing %s library\n", m_id, "DRM/KMS_LIBRARY");
 		return false;
 	}
-
+*/
 	int screen_pos = -1;
 
 	// Handle the screen name, "auto", "screen[0-9]" and device name
