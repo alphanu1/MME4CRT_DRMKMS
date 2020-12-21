@@ -1025,7 +1025,7 @@ int drm_master_hook(int last_fd)
 	return 0;
 }
 
-bool update_mode(modeline *mode)
+bool update_mode(drmModeModeInfo *mode)
 {
 	if (!mode)
 		return false;
@@ -1051,7 +1051,7 @@ bool update_mode(modeline *mode)
 	return true;
 }
 
-bool add_mode(modeline *mode)
+bool add_mode(drmModeModeInfo *mode)
 {
 	if (!mode)
 		return false;
@@ -1075,7 +1075,7 @@ bool add_mode(modeline *mode)
 	return true;
 }
 
-bool set_timing(modeline *mode)
+bool set_timing(drmModeModeInfo *mode)
 {
 	if (!mode)
 		return false;
@@ -1214,7 +1214,7 @@ bool set_timing(modeline *mode)
 	return true;
 }
 
-bool delete_mode(modeline *mode)
+bool delete_mode(drmModeModeInfo *mode)
 {
 	if (!mode)
 		return false;
@@ -1229,7 +1229,7 @@ bool delete_mode(modeline *mode)
 	return true;
 }
 
-bool get_timing(modeline *mode)
+bool get_timing(drmModeModeInfo *mode)
 {
 	// Handle no screen detected case
 	if (!m_desktop_output)
