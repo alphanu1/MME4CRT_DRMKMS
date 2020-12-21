@@ -61,31 +61,6 @@ struct modeset_fbuf
 #include <sys/stat.h>
 #include <drm_fourcc.h>
 
-#define drmGetVersion p_drmGetVersion
-#define drmFreeVersion p_drmFreeVersion
-#define drmModeGetResources p_drmModeGetResources
-#define drmModeGetConnector p_drmModeGetConnector
-#define drmModeFreeConnector p_drmModeFreeConnector
-#define drmModeFreeResources p_drmModeFreeResources
-#define drmModeGetEncoder p_drmModeGetEncoder
-#define drmModeFreeEncoder p_drmModeFreeEncoder
-#define drmModeGetCrtc p_drmModeGetCrtc
-#define drmModeSetCrtc p_drmModeSetCrtc
-#define drmModeFreeCrtc p_drmModeFreeCrtc
-#define drmModeAttachMode p_drmModeAttachMode
-#define drmModeAddFB p_drmModeAddFB
-#define drmModeRmFB p_drmModeRmFB
-#define drmModeGetFB p_drmModeGetFB
-#define drmModeFreeFB p_drmModeFreeFB
-#define drmPrimeHandleToFD p_drmPrimeHandleToFD
-#define drmModeGetPlaneResources p_drmModeGetPlaneResources
-#define drmModeFreePlaneResources p_drmModeFreePlaneResources
-#define drmIoctl p_drmIoctl
-#define drmGetCap p_drmGetCap
-#define drmIsMaster p_drmIsMaster
-#define drmSetMaster p_drmSetMaster
-#define drmDropMaster p_drmDropMaster
-
  int s_shared_fd[10] = {};
  int s_shared_count[10] = {};
  int static_id = 0;
