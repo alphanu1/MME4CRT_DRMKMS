@@ -1093,7 +1093,7 @@ bool add_mode(modeline *mode)
 
 	return true;
 }
-
+/*
 bool set_timing(modeline *mode)
 {
 	if (!mode)
@@ -1322,7 +1322,7 @@ bool get_timing(modeline *mode)
 
 	return true;
 }
-
+/*
 
 
 #endif
