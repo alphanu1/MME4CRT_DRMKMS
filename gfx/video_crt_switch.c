@@ -622,7 +622,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 
 // ret = modeset_create_dumbfb(drm.fd, &buf, 4, DRM_FORMAT_XRGB8888);
 
-struct _drmModeModeInfo *dmode = null;
+struct _drmModeModeInfo dmode = null;
                         // Create specific mode name
                         snprintf(dmode.name, 32, "SR-%d_%dx%d@%.02f%s", m_id, width, height, hz);
                         dmode.clock       = pixel_clock  / 1000;
@@ -1002,16 +1002,10 @@ bool drmkms_init()
 						}
 					}
 				}
-				if (!drmIsMaster(m_drm_fd))
-					//log_error("DRM/KMS: <%d> (init) [ERROR] limited DRM rights on this screen\n", m_id);
+
 			}
 		}
-		else
-		{
-			if (!num)
-				//log_error("DRM/KMS: <%d> (init) [ERROR] cannot open device %s\n", m_id, drm_name);
-			break;
-		}
+
 	}
 
 	// Handle no screen detected case
