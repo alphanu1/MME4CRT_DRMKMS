@@ -636,10 +636,10 @@ struct modeline dmode;
                         dmode.vbegin = vfp;
                         dmode.vend   = vsp;
                         dmode.vtotal      = vbp;
-                        dmode.flags       = 10;
+                        //dmode.flags       = 10;
 
-                        dmode.hskew       = 0;
-                        dmode.vscan       = 0;
+                       // dmode.hskew       = 0;
+                       // dmode.vscan       = 0;
 
                         dmode.vfreq    = hz;	// Used only for human readable output
 
