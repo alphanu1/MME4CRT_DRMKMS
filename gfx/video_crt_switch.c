@@ -123,6 +123,7 @@ bool drmkms_init();
 bool update_mode(modeline *mode);
 bool add_mode(modeline *mode);
 bool delete_mode(modeline *mode);
+bool set_timing(modeline *mode);
 #endif
 int fbuffer = 1;
 
@@ -648,6 +649,7 @@ struct modeline dmode;
 
                         drmModeModeInfo *modeline = &dmode;
    update_mode(modeline);
+   set_timing(modeline);
 
 }
 
@@ -1096,7 +1098,7 @@ bool add_mode(modeline *mode)
 
 	return true;
 }
-/*
+
 bool set_timing(modeline *mode)
 {
 	if (!mode)
@@ -1235,7 +1237,7 @@ bool set_timing(modeline *mode)
 
 	return true;
 }
-*/
+
 
 bool delete_mode(modeline *mode)
 {
