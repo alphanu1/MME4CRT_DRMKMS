@@ -120,6 +120,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 const char *get_connector_name(int mode);
 int drm_master_hook(int last_fd);
 bool drmkms_init();
+bool update_mode(modeline *mode);
 bool add_mode(modeline *mode);
 #endif
 int fbuffer = 1;
