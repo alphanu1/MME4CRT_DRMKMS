@@ -1183,17 +1183,17 @@ bool set_timing(modeline *mode)
 			//if (ret)
 				//log_verbose("DRM/KMS: <%d> (add_mode) [ERROR] ioctl DRM_IOCTL_MODE_CREATE_DUMB %d\n", m_id, ret);
 
-			if (drmModeAddFB(m_drm_fd, dmode.hdisplay, dmode.vdisplay, pframebuffer->depth, pframebuffer->bpp, create_dumb.pitch, create_dumb.handle, &framebuffer_id))
+			drmModeAddFB(m_drm_fd, dmode.hdisplay, dmode.vdisplay, pframebuffer->depth, pframebuffer->bpp, create_dumb.pitch, create_dumb.handle, &framebuffer_id);
 				//log_error("DRM/KMS: <%d> (add_mode) [ERROR] cannot add frame buffer\n", m_id);
-			else
+			//else
 				m_dumb_handle = create_dumb.handle;
 
-			drm_mode_map_dumb map_dumb = {};
+			drm_mode_map_dumb map_dumb;
 			map_dumb.handle = create_dumb.handle;
 
 			ret = drmIoctl(m_drm_fd, DRM_IOCTL_MODE_MAP_DUMB, &map_dumb);
-			if (ret)
-				log_verbose("DRM/KMS: <%d> (add_mode) [ERROR] ioctl DRM_IOCTL_MODE_MAP_DUMB %d\n", m_id, ret);
+			//if (ret)
+			//	log_verbose("DRM/KMS: <%d> (add_mode) [ERROR] ioctl DRM_IOCTL_MODE_MAP_DUMB %d\n", m_id, ret);
 
 			void *map = mmap(0, create_dumb.size, PROT_READ | PROT_WRITE, MAP_SHARED, m_drm_fd, map_dumb.offset);
 			if (map != MAP_FAILED)
