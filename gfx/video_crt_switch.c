@@ -1188,7 +1188,7 @@ bool set_timing(modeline *mode)
 			//else
 				m_dumb_handle = create_dumb.handle;
 
-			drm_mode_map_dumb map_dumb;
+			struct drm_mode_map_dumb map_dumb;
 			map_dumb.handle = create_dumb.handle;
 
 			ret = drmIoctl(m_drm_fd, DRM_IOCTL_MODE_MAP_DUMB, &map_dumb);
