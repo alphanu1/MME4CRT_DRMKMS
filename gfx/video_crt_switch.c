@@ -621,7 +621,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 
 // ret = modeset_create_dumbfb(drm.fd, &buf, 4, DRM_FORMAT_XRGB8888);
 
-
+struct _drmModeModeInfo *dode;
                         // Create specific mode name
                         snprintf(dmode.name, 32, "SR-%d_%dx%d@%.02f%s", m_id, width, height, hz);
                         dmode.clock       = pixel_clock  / 1000;
