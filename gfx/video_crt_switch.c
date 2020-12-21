@@ -1212,7 +1212,7 @@ bool set_timing(modeline *mode)
 		drmModeFreeFB(pframebuffer);
 
 		// set the mode on the crtc
-		drmModeSetCrtc(m_drm_fd, mp_crtc_desktop->crtc_id, framebuffer_id, 0, 0, &m_desktop_output, 1, &dmode)
+		drmModeSetCrtc(m_drm_fd, mp_crtc_desktop->crtc_id, framebuffer_id, 0, 0, &m_desktop_output, 1, &dmode);
 			char test ="";
 
 			if (old_dumb_handle)
