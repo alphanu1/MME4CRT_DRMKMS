@@ -1213,7 +1213,7 @@ bool set_timing(modeline *mode)
 
 		// set the mode on the crtc
 		if (drmModeSetCrtc(m_drm_fd, mp_crtc_desktop->crtc_id, framebuffer_id, 0, 0, &m_desktop_output, 1, &dmode))
-			string test ="";//"DRM/KMS: <%d> (add_mode) [ERROR] cannot attach the mode to the crtc %d frame buffer %d\n", m_id, mp_crtc_desktop->crtc_id, framebuffer_id;
+			char test ="";//"DRM/KMS: <%d> (add_mode) [ERROR] cannot attach the mode to the crtc %d frame buffer %d\n", m_id, mp_crtc_desktop->crtc_id, framebuffer_id;
 		else
 		{
 			if (old_dumb_handle)
