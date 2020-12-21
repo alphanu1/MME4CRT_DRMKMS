@@ -626,7 +626,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
 
 struct modeline dmode;
                         // Create specific mode name
-                        snprintf(dmode.name, 32, "SR-%d_%dx%d@%.02f%s", m_id, width, height, hz);
+                        //snprintf(dmode.name, 32, "SR-%d_%dx%d@%.02f%s", m_id, width, height, hz);
                         //dmode.       = pixel_clock  / 1000;
                         dmode.hactive    = width;
                         dmode.hbegin = hfp;
