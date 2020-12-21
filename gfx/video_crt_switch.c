@@ -98,31 +98,6 @@ typedef struct modeline
 
 
 
-		__typeof__(drmGetVersion) *p_drmGetVersion;
-		__typeof__(drmFreeVersion) *p_drmFreeVersion;
-		__typeof__(drmModeGetResources) *p_drmModeGetResources;
-		__typeof__(drmModeGetConnector) *p_drmModeGetConnector;
-		__typeof__(drmModeFreeConnector) *p_drmModeFreeConnector;
-		__typeof__(drmModeFreeResources) *p_drmModeFreeResources;
-		__typeof__(drmModeGetEncoder) *p_drmModeGetEncoder;
-		__typeof__(drmModeFreeEncoder) *p_drmModeFreeEncoder;
-		__typeof__(drmModeGetCrtc) *p_drmModeGetCrtc;
-		__typeof__(drmModeSetCrtc) *p_drmModeSetCrtc;
-		__typeof__(drmModeFreeCrtc) *p_drmModeFreeCrtc;
-		__typeof__(drmModeAttachMode) *p_drmModeAttachMode;
-		__typeof__(drmModeAddFB) *p_drmModeAddFB;
-		__typeof__(drmModeRmFB) *p_drmModeRmFB;
-		__typeof__(drmModeGetFB) *p_drmModeGetFB;
-		__typeof__(drmModeFreeFB) *p_drmModeFreeFB;
-		__typeof__(drmPrimeHandleToFD) *p_drmPrimeHandleToFD;
-		__typeof__(drmModeGetPlaneResources) *p_drmModeGetPlaneResources;
-		__typeof__(drmModeFreePlaneResources) *p_drmModeFreePlaneResources;
-		__typeof__(drmIoctl) *p_drmIoctl;
-		__typeof__(drmGetCap) *p_drmGetCap;
-		__typeof__(drmIsMaster) *p_drmIsMaster;
-		__typeof__(drmSetMaster) *p_drmSetMaster;
-		__typeof__(drmDropMaster) *p_drmDropMaster;
-
 int m_id = 0;
 
 		int m_drm_fd = 0;
@@ -742,112 +717,112 @@ bool drmkms_init()
 	mp_drm_handle = dlopen("libdrm.so", RTLD_NOW);
 	if (mp_drm_handle)
 	{
-		drmGetVersion = (__typeof__(drmGetVersion)) dlsym(mp_drm_handle, "drmGetVersion");
+		drmGetVersion = (drmGetVersion)dlsym(mp_drm_handle, "drmGetVersion");
 		if (drmGetVersion == NULL)
 		{
 			//log_error("DRM/KMS: <%d> (init) [ERROR] missing func %s in %s", m_id, "drmGetVersion", "DRM_LIBRARY");
 			return false;
 		}
 
-		drmFreeVersion = (__typeof__(drmFreeVersion)) dlsym(mp_drm_handle, "drmFreeVersion");
+		drmFreeVersion = (drmFreeVersion) dlsym(mp_drm_handle, "drmFreeVersion");
 		if (drmFreeVersion == NULL)
 		{
 			//log_error("DRM/KMS: <%d> (init) [ERROR] missing func %s in %s", m_id, "drmFreeVersion", "DRM_LIBRARY");
 			return false;
 		}
 
-		drmModeGetResources =  dlsym(mp_drm_handle, "drmModeGetResources");
+		drmModeGetResources =  (drmModeGetResources)dlsym(mp_drm_handle, "drmModeGetResources");
 		if (drmModeGetResources == NULL)
 		{
 			//log_error("DRM/KMS: <%d> (init) [ERROR] missing func %s in %s", m_id, "drmModeGetResources", "DRM_LIBRARY");
 			return false;
 		}
 
-		drmModeGetConnector =  dlsym(mp_drm_handle, "drmModeGetConnector");
+		drmModeGetConnector =  (drmModeGetConnector)dlsym(mp_drm_handle, "drmModeGetConnector");
 		if (drmModeGetConnector == NULL)
 		{
 			//log_error("DRM/KMS: <%d> (init) [ERROR] missing func %s in %s", m_id, "drmModeGetConnector", "DRM_LIBRARY");
 			return false;
 		}
 
-		drmModeFreeConnector = dlsym(mp_drm_handle, "drmModeFreeConnector");
+		drmModeFreeConnector = (drmModeFreeConnector)dlsym(mp_drm_handle, "drmModeFreeConnector");
 		if (drmModeFreeConnector == NULL)
 		{
 			//log_error("DRM/KMS: <%d> (init) [ERROR] missing func %s in %s", m_id, "drmModeFreeConnector", "DRM_LIBRARY");
 			return false;
 		}
 
-		drmModeFreeResources = dlsym(mp_drm_handle, "drmModeFreeResources");
+		drmModeFreeResources = (drmModeFreeConnector)dlsym(mp_drm_handle, "drmModeFreeResources");
 		if (drmModeFreeResources == NULL)
 		{
 			//log_error("DRM/KMS: <%d> (init) [ERROR] missing func %s in %s", m_id, "drmModeFreeResources", "DRM_LIBRARY");
 			return false;
 		}
 
-		drmModeGetEncoder = (__typeof__(drmModeGetEncoder)) dlsym(mp_drm_handle, "drmModeGetEncoder");
+		drmModeGetEncoder = (drmModeGetEncoder) dlsym(mp_drm_handle, "drmModeGetEncoder");
 		if (drmModeGetEncoder == NULL)
 		{
 			//log_error("DRM/KMS: <%d> (init) [ERROR] missing func %s in %s", m_id, "drmModeGetEncoder", "DRM_LIBRARY");
 			return false;
 		}
 
-		drmModeFreeEncoder = (__typeof__(drmModeFreeEncoder)) dlsym(mp_drm_handle, "drmModeFreeEncoder");
+		drmModeFreeEncoder = (drmModeFreeEncoder) dlsym(mp_drm_handle, "drmModeFreeEncoder");
 		if (drmModeFreeEncoder == NULL)
 		{
 			//log_error("DRM/KMS: <%d> (init) [ERROR] missing func %s in %s", m_id, "drmModeFreeEncoder", "DRM_LIBRARY");
 			return false;
 		}
 
-		drmModeGetCrtc = (__typeof__(drmModeGetCrtc)) dlsym(mp_drm_handle, "drmModeGetCrtc");
+		drmModeGetCrtc = (drmModeGetCrtc) dlsym(mp_drm_handle, "drmModeGetCrtc");
 		if (drmModeGetCrtc == NULL)
 		{
 			//log_error("DRM/KMS: <%d> (init) [ERROR] missing func %s in %s", m_id, "drmModeGetCrtc", "DRM_LIBRARY");
 			return false;
 		}
 
-		drmModeSetCrtc = (__typeof__(drmModeSetCrtc)) dlsym(mp_drm_handle, "drmModeSetCrtc");
+		drmModeSetCrtc = (drmModeSetCrtc) dlsym(mp_drm_handle, "drmModeSetCrtc");
 		if (drmModeSetCrtc == NULL)
 		{
 			//log_error("DRM/KMS: <%d> (init) [ERROR] missing func %s in %s", m_id, "drmModeSetCrtc", "DRM_LIBRARY");
 			return false;
 		}
 
-		drmModeFreeCrtc = (__typeof__(drmModeFreeCrtc)) dlsym(mp_drm_handle, "drmModeFreeCrtc");
+		drmModeFreeCrtc = (drmModeFreeCrtc) dlsym(mp_drm_handle, "drmModeFreeCrtc");
 		if (drmModeFreeCrtc == NULL)
 		{
 			//log_error("DRM/KMS: <%d> (init) [ERROR] missing func %s in %s", m_id, "drmModeFreeCrtc", "DRM_LIBRARY");
 			return false;
 		}
 
-		drmModeAttachMode = (__typeof__(drmModeAttachMode)) dlsym(mp_drm_handle, "drmModeAttachMode");
+		drmModeAttachMode = (drmModeAttachMode) dlsym(mp_drm_handle, "drmModeAttachMode");
 		if (drmModeAttachMode == NULL)
 		{
 			//log_error("DRM/KMS: <%d> (init) [ERROR] missing func %s in %s", m_id, "drmModeAttachMode", "DRM_LIBRARY");
 			return false;
 		}
 
-		drmModeAddFB = (__typeof__(drmModeAddFB)) dlsym(mp_drm_handle, "drmModeAddFB");
+		drmModeAddFB = (drmModeAddFB) dlsym(mp_drm_handle, "drmModeAddFB");
 		if (drmModeAddFB == NULL)
 		{
 			//log_error("DRM/KMS: <%d> (init) [ERROR] missing func %s in %s", m_id, "drmModeAddFB", "DRM_LIBRARY");
 			return false;
 		}
 
-		drmModeRmFB = (__typeof__(drmModeRmFB)) dlsym(mp_drm_handle, "drmModeRmFB");
+		drmModeRmFB = (drmModeRmFB) dlsym(mp_drm_handle, "drmModeRmFB");
 		if (drmModeRmFB == NULL)
 		{
 			//log_error("DRM/KMS: <%d> (init) [ERROR] missing func %s in %s", m_id, "drmModeRmFB", "DRM_LIBRARY");
 			return false;
 		}
 
-		drmModeGetFB = (__typeof__(drmModeGetFB)) dlsym(mp_drm_handle, "drmModeGetFB");
+		drmModeGetFB = (drmModeGetFB) dlsym(mp_drm_handle, "drmModeGetFB");
 		if (drmModeGetFB == NULL)
 		{
 			//log_error("DRM/KMS: <%d> (init) [ERROR] missing func %s in %s", m_id, "drmModeGetFB", "DRM_LIBRARY");
 			return false;
 		}
 
-		drmModeFreeFB = (__typeof__(drmModeFreeFB)) dlsym(mp_drm_handle, "drmModeFreeFB");
+		drmModeFreeFB = (drmModeFreeFB) dlsym(mp_drm_handle, "drmModeFreeFB");
 		if (drmModeFreeFB == NULL)
 		{
 			//log_error("DRM/KMS: <%d> (init) [ERROR] missing func %s in %s", m_id, "drmModeFreeFB", "DRM_LIBRARY");
@@ -861,49 +836,49 @@ bool drmkms_init()
 			return false;
 		}
 
-		drmModeGetPlaneResources = (__typeof__(drmModeGetPlaneResources)) dlsym(mp_drm_handle, "drmModeGetPlaneResources");
+		drmModeGetPlaneResources = (drmModeGetPlaneResources) dlsym(mp_drm_handle, "drmModeGetPlaneResources");
 		if (drmModeGetPlaneResources == NULL)
 		{
 			//log_error("DRM/KMS: <%d> (init) [ERROR] missing func %s in %s", m_id, "drmModeGetPlaneResources", "DRM_LIBRARY");
 			return false;
 		}
 
-		drmModeFreePlaneResources = (__typeof__(drmModeFreePlaneResources)) dlsym(mp_drm_handle, "drmModeFreePlaneResources");
+		drmModeFreePlaneResources = (drmModeFreePlaneResources) dlsym(mp_drm_handle, "drmModeFreePlaneResources");
 		if (drmModeFreePlaneResources == NULL)
 		{
 			//log_error("DRM/KMS: <%d> (init) [ERROR] missing func %s in %s", m_id, "drmModeFreePlaneResources", "DRM_LIBRARY");
 			return false;
 		}
 
-		drmIoctl = (__typeof__(drmIoctl)) dlsym(mp_drm_handle, "drmIoctl");
+		drmIoctl = (drmIoctl) dlsym(mp_drm_handle, "drmIoctl");
 		if (drmIoctl == NULL)
 		{
 			//log_error("DRM/KMS: <%d> (init) [ERROR] missing func %s in %s", m_id, "drmIoctl", "DRM_LIBRARY");
 			return false;
 		}
 
-		drmGetCap = (__typeof__(drmGetCap)) dlsym(mp_drm_handle, "drmGetCap");
+		drmGetCap = (drmGetCap) dlsym(mp_drm_handle, "drmGetCap");
 		if (drmGetCap == NULL)
 		{
 			//log_error("DRM/KMS: <%d> (init) [ERROR] missing func %s in %s", m_id, "drmGetCap", "DRM_LIBRARY");
 			return false;
 		}
 
-		drmIsMaster = (__typeof__(drmIsMaster)) dlsym(mp_drm_handle, "drmIsMaster");
+		drmIsMaster = (drmIsMaster) dlsym(mp_drm_handle, "drmIsMaster");
 		if (drmIsMaster == NULL)
 		{
 			//log_error("DRM/KMS: <%d> (init) [ERROR] missing func %s in %s", m_id, "drmIsMaster", "DRM_LIBRARY");
 			return false;
 		}
 
-		drmSetMaster = (__typeof__(drmSetMaster)) dlsym(mp_drm_handle, "drmSetMaster");
+		drmSetMaster = (drmSetMaster) dlsym(mp_drm_handle, "drmSetMaster");
 		if (drmSetMaster == NULL)
 		{
 			//log_error("DRM/KMS: <%d> (init) [ERROR] missing func %s in %s", m_id, "drmSetMaster", "DRM_LIBRARY");
 			return false;
 		}
 
-		drmDropMaster = (__typeof__(drmDropMaster)) dlsym(mp_drm_handle, "drmDropMaster");
+		drmDropMaster = (drmDropMaster) dlsym(mp_drm_handle, "drmDropMaster");
 		if (drmDropMaster == NULL)
 		{
 			//log_error("DRM/KMS: <%d> (init) [ERROR] missing func %s in %s", m_id, "drmDropMaster", "DRM_LIBRARY");
