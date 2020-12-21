@@ -1196,11 +1196,11 @@ bool set_timing(modeline *mode)
 			//	log_verbose("DRM/KMS: <%d> (add_mode) [ERROR] ioctl DRM_IOCTL_MODE_MAP_DUMB %d\n", m_id, ret);
 
 			//void *map = mmap(0, create_dumb.size, PROT_READ | PROT_WRITE, MAP_SHARED, m_drm_fd, create_dumb.offset);
-			if (map != MAP_FAILED)
-			{
+		//	if (map != MAP_FAILED)
+		//	{
 				// clear the frame buffer
-				memset(map, 0, create_dumb.size);
-			}
+		//		memset(map, 0, create_dumb.size);
+	//		}
 			
 		}
 	
