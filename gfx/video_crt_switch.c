@@ -643,7 +643,7 @@ struct _drmModeModeInfo *dmode = null;
                         dmode.type        = DRM_MODE_TYPE_USERDEF;	//DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
 
                         drmModeModeInfo *mode = &dmode;
-   update_mode(mode)
+   update_mode(mode);
 
 }
 
@@ -695,7 +695,7 @@ const char *get_connector_name(int mode)
 
 
 
-void drmkms_timing(char *device_name, custom_video_settings *vs)
+void drmkms_timing(char *device_name)
 {
 	m_vs = *vs;
 	m_id = ++static_id;
