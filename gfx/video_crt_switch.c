@@ -1175,9 +1175,9 @@ bool set_timing(modeline *mode)
 
 			// create a new dumb fb (not driver specefic)
 			drm_mode_create_dumb create_dumb;
-			create_dumb.width = dmode.hdisplay;
-			create_dumb.height = dmode.vdisplay;
-			create_dumb.bpp = pframebuffer->bpp;
+			//create_dumb.width = dmode.hdisplay;
+			//create_dumb.height = dmode.vdisplay;
+			//create_dumb.bpp = pframebuffer->bpp;
 
 			int ret = ioctl(m_drm_fd, DRM_IOCTL_MODE_CREATE_DUMB, &create_dumb);
 			//if (ret)
