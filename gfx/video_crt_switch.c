@@ -119,6 +119,7 @@ static void crt_kms_switch(unsigned width, unsigned height,
    int xoffset, int padjust);
 const char *get_connector_name(int mode);
 int drm_master_hook(int last_fd);
+bool drmkms_init();
 #endif
 int fbuffer = 1;
 
@@ -697,7 +698,7 @@ const char *get_connector_name(int mode)
 
 void drmkms_timing(char *device_name)
 {
-	m_vs = *vs;
+	//m_vs = *vs;
 	m_id = ++static_id;
 
 	//log_verbose("DRM/KMS: <%d> (drmkms_timing) creation (%s)\n", m_id, device_name);
